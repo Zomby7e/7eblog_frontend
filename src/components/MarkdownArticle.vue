@@ -1,12 +1,15 @@
 <template>
   <div id="article-container">
-    <div id="markdownHtml" v-html="markdownHtml"></div>
+    <div id="markdownHtml" v-html="markdownHtml" v-show="showHtml"></div>
+    <div v-if="!showHtml" style="color: gray">Loading content</div>
   </div>
 </template>
 
 <script>
 import showdown from 'showdown'
 import { getReadData } from '@/utils/web-api'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/atom-one-dark-reasonable.css'
 
 export default {
   name: 'MarkdownArticle',
@@ -20,7 +23,8 @@ export default {
         timestamp: 0,
         title: ''
       },
-      markdownHtml: ''
+      markdownHtml: '',
+      showHtml: false
     }
   },
   methods: {
@@ -30,6 +34,11 @@ export default {
         response => {
           this.articleData = response.data
           this.markdownHtml = converter.makeHtml(response.data.content)
+          // It doesn't work without it written like this, I don't know why.
+          setTimeout(() => {
+            hljs.highlightAll()
+            this.showHtml = true
+          }, 0)
         }
       ).catch(
         error => {
@@ -51,7 +60,7 @@ export default {
 
 #markdownHtml :deep h1, #markdownHtml :deep h2, #markdownHtml :deep h3, #markdownHtml :deep h4, #markdownHtml :deep h5,
 #markdownHtml :deep h6 {
-  color: #c360fd;
+  color: rgb(172, 34, 255);
 }
 
 #markdownHtml :deep h1 {
@@ -79,7 +88,9 @@ export default {
 }
 
 #markdownHtml :deep blockquote {
-  background-color: rgba(213, 175, 248, 0.1);
+  //background-color: rgba(213, 175, 248, 0.1);
+
+  background-color: rgba(208, 243, 252, 0.1);
   border: #e5e5e5 solid 1px;
   border-radius: 5px;
   padding: 0 12px;
@@ -89,7 +100,7 @@ export default {
 }
 
 #markdownHtml :deep blockquote::before {
-  background-color: #c360fd;
+  background-color: rgba(165, 4, 255, 0.8);
   content: '';
   position: absolute;
   top: 0;
