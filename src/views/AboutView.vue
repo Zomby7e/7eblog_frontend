@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <MarkdownArticle id="rust-tutorial"></MarkdownArticle>
+    <MarkdownArticle id="none" type="about"></MarkdownArticle>
   </div>
 </template>
 <script lang="ts">
@@ -14,4 +14,3 @@ export default defineComponent({
   }
 })
 </script>
-<!--https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/atom-one-dark-reasonable.min.css-->

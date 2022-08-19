@@ -1,19 +1,31 @@
 <template>
   <div id="article-container">
     <div id="markdownHtml" v-html="markdownHtml" v-show="showHtml"></div>
-    <div v-if="!showHtml" style="color: gray">Loading content</div>
+<!--    This HTML fragment is used to show the loading animation and hint-->
+    <div id="loading" v-if="!showHtml">
+      <div class="lds-heart">
+        <div></div>
+      </div>
+      <div id="loading-text">
+        <text>正在加载内容，如果加载出错请点击</text>
+        <text id="loading-reload" @click="reload">刷新</text>
+        <text>。</text>
+      </div>
+    </div>
+<!--    Loading animation - END-->
   </div>
+
 </template>
 
 <script>
 import showdown from 'showdown'
-import { getReadData } from '@/utils/web-api'
+import { getReadData, getNoteData, getAboutData } from '@/utils/web-api'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 
 export default {
   name: 'MarkdownArticle',
-  props: ['id'],
+  props: ['id', 'type'],
   data () {
     return {
       articleData: {
@@ -29,22 +41,47 @@ export default {
   },
   methods: {
     initData () {
+      const onSuccess = (response) => {
+        this.articleData = response.data
+        this.markdownHtml = converter.makeHtml(response.data.content)
+        // It doesn't work without it written like this, I don't know why.
+        setTimeout(() => {
+          hljs.highlightAll()
+          this.showHtml = true
+        }, 0)
+      }
+
+      const onError = (error) => {
+        console.log(error)
+      }
+
+      const onAboutSuccess = (response) => {
+        this.articleData = response.data
+        console.log(response)
+        this.markdownHtml = converter.makeHtml(response.data)
+        // It doesn't work without it written like this, I don't know why.
+        setTimeout(() => {
+          hljs.highlightAll()
+          this.showHtml = true
+        }, 0)
+      }
+
       const converter = new showdown.Converter()
-      getReadData(this.id).then(
-        response => {
-          this.articleData = response.data
-          this.markdownHtml = converter.makeHtml(response.data.content)
-          // It doesn't work without it written like this, I don't know why.
-          setTimeout(() => {
-            hljs.highlightAll()
-            this.showHtml = true
-          }, 0)
-        }
-      ).catch(
-        error => {
-          console.log(error)
-        }
-      )
+
+      switch (this.type) {
+        case 'about':
+          getAboutData().then(onAboutSuccess).catch(onError)
+          break
+        case 'read':
+          getReadData(this.id).then(onSuccess).catch(onError)
+          break
+        case 'note':
+          getNoteData(this.id).then(onSuccess).catch(onError)
+          break
+      }
+    },
+    reload () {
+      location.reload()
     }
   },
   beforeMount () {
@@ -60,7 +97,7 @@ export default {
 
 #markdownHtml :deep h1, #markdownHtml :deep h2, #markdownHtml :deep h3, #markdownHtml :deep h4, #markdownHtml :deep h5,
 #markdownHtml :deep h6 {
-  color: rgb(172, 34, 255);
+  //color: rgb(172, 34, 255);
 }
 
 #markdownHtml :deep h1 {
@@ -88,8 +125,6 @@ export default {
 }
 
 #markdownHtml :deep blockquote {
-  //background-color: rgba(213, 175, 248, 0.1);
-
   background-color: rgba(208, 243, 252, 0.1);
   border: #e5e5e5 solid 1px;
   border-radius: 5px;
@@ -109,4 +144,90 @@ export default {
   width: .30rem;
 }
 
+// red heart loading animation - START
+// https://loading.io/css/
+.lds-heart {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  transform: rotate(45deg);
+  transform-origin: 40px 40px;
+}
+
+.lds-heart div {
+  top: 32px;
+  left: 32px;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: rgb(165, 4, 255);
+  animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.lds-heart div:after,
+.lds-heart div:before {
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 32px;
+  height: 32px;
+  background: rgb(165, 4, 255);
+}
+
+.lds-heart div:before {
+  left: -24px;
+  border-radius: 50% 0 0 50%;
+}
+
+.lds-heart div:after {
+  top: -24px;
+  border-radius: 50% 50% 0 0;
+}
+
+@keyframes lds-heart {
+  0% {
+    transform: scale(0.95);
+  }
+  5% {
+    transform: scale(1.1);
+  }
+  39% {
+    transform: scale(0.85);
+  }
+  45% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
+// red heart loading animation - END
+#loading {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#loading-text {
+  margin-top: 15px;
+  color: gray;
+}
+
+#loading-reload {
+  color: #B721FF;
+  cursor: pointer;
+}
 </style>
