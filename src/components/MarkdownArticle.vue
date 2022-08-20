@@ -91,8 +91,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#article-container {
-  padding: 0 80px;
+@media (orientation: portrait ) {
+  #article-container {
+    padding: 0 8px;
+  }
+}
+@media (orientation: landscape ) {
+  #article-container {
+    padding: 0 80px;
+  }
 }
 
 #markdownHtml :deep h1, #markdownHtml :deep h2, #markdownHtml :deep h3, #markdownHtml :deep h4, #markdownHtml :deep h5,

@@ -1,9 +1,11 @@
 <template>
-  <div class="home-root">
-    <ArticleList
-      :currentPage="0"
-      :pageSize='10'
-    ></ArticleList>
+  <div id="home-root">
+    <div class="list-border">
+      <ArticleList
+        :currentPage="0"
+        :pageSize='10'
+      ></ArticleList>
+    </div>
   </div>
 </template>
 
@@ -19,3 +21,17 @@ export default defineComponent({
 })
 
 </script>
+
+<style scoped>
+@media (orientation: portrait ) {
+  .list-border {
+    padding: 8px 8px;
+  }
+}
+@media (orientation: landscape ) {
+  .list-border {
+    padding: 8px 80px;
+  }
+}
+
+</style>

@@ -24,14 +24,28 @@ export default {
   right: 0;
 }
 
-#navbar-background {
-  padding: 0 80px;
-  background-color: #21D4FD;
-  background-image: linear-gradient(248deg, #21D4FD 0%, #B721FF 100%);
-  display: flex;
-  flex-direction: column;
-  height: 80px;
-  justify-content: space-around;
+@media (orientation: landscape ) {
+  #navbar-background {
+    padding: 0 80px;
+    background-color: #21D4FD;
+    background-image: linear-gradient(248deg, #21D4FD 0%, #B721FF 100%);
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    justify-content: space-around;
+  }
+}
+
+@media (orientation: portrait ) {
+  #navbar-background {
+    padding: 0 8px;
+    background-color: #21D4FD;
+    background-image: linear-gradient(248deg, #21D4FD 0%, #B721FF 100%);
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    justify-content: space-around;
+  }
 }
 
 #header-center {
@@ -45,17 +59,33 @@ export default {
   font-size: 1.5rem;
   color: white;
   text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  user-select: none;
 }
 
 #header-center-links {
   display: flex;
+  overflow-x: auto;
+  /*Only supports Firefox*/
+  scrollbar-width: none;
+  user-select: none;
+}
+
+/*Supports Chromium and Safari*/
+#header-center-links::-webkit-scrollbar {
+  display: none;
 }
 
 .header-center-link {
   margin-right: 8px;
+  flex-shrink: 0;
 }
 
-a:link, a:visited{
+a:link, a:visited {
   color: white;
   text-decoration: none;
 }

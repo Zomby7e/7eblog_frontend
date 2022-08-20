@@ -3,8 +3,7 @@
     <div v-for="(item, index) in articleList"
          :key="index"
     >
-      <div @click="goRead(item)">{{ item.title }}</div>
-      <div>{{ 'content of this title' }}</div>
+      <div class="article-title" @click="goRead(item)">{{ item.title }}</div>
       <div><text>{{ formatDate(item.timestamp) }}</text>&nbsp;&nbsp;&nbsp;&nbsp;<text>{{ 'hashtags: ' + item.hashtag }}</text></div>
       <br>
     </div>
@@ -74,5 +73,20 @@ export default {
 </script>
 
 <style scoped>
+.article-title {
+  color: #B721FF;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: inline-block;
+}
 
+.article-title:hover {
+  cursor: pointer;
+}
+.article-title:hover:before {
+  content: "> ";
+}
+.article-title:hover:after {
+  content: " <";
+}
 </style>
