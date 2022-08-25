@@ -26,6 +26,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * [GET] Get article list from back-end.
+     */
     getList () {
       if (!this.webApiLock) {
         this.webApiLock = true
@@ -43,6 +46,11 @@ export default {
         )
       }
     },
+    /**
+     * Convert timestamp(milliseconds) to readable text
+     * @param timestamp Accurate to milliseconds
+     * @return {string} formatted time information
+     */
     formatDate (timestamp) {
       return toDateChinese(timestamp)
     },

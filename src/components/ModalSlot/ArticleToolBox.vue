@@ -1,6 +1,6 @@
 <template>
   <div id="article-toolbox-root">
-    <div v-for="(item, index) in menuOptions" :key="index" class="option" @click="onOptionClick(index + 1)">
+    <div v-for="(item, index) in menuOptions" :key="index" class="option" @click="onOptionClick(index)">
       {{ item }}
     </div>
     <div style="color: gray; margin-top: 15px; font-size: 0.85rem;">这是一篇内容的工具菜单</div>
@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { saveAs } from 'file-saver'
+
 export default {
   name: 'ArticleToolBox',
   data () {
@@ -19,12 +21,16 @@ export default {
     }
   },
   methods: {
+    /**
+     * When some option clicked, this will be executed.
+     * @param optionId Option number which decides what to do
+     */
     onOptionClick (optionId) {
       switch (optionId) {
-        case 1:
-          // TODO: Save markdown string to file.
+        case 0:
+          this.saveAndDownload()
           break
-        case 2:
+        case 1:
           navigator.clipboard.writeText(window.location.href).then(
             () => {
               this.menuOptions[1] = '复制成功！'
@@ -45,6 +51,17 @@ export default {
         default:
           break
       }
+    },
+    /**
+     * Save the currently read article to a Markdown text file.
+     */
+    saveAndDownload () {
+      // TODO: Get and convert markdown string to blob.
+      // TODO: I need a method to get a string data from another page, maybe 'mitt'?
+      const params = new URLSearchParams(window.location.search)
+      const fileName = params.get('id') ?? 'text'
+      const blob = new Blob(['Hello, file.md'], { type: 'text/plain;charset=utf-8' })
+      saveAs(blob, `${fileName}.md`)
     }
   }
 }

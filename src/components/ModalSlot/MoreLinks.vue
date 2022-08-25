@@ -12,6 +12,10 @@ export default {
   props: ['links'],
   name: 'MoreLinks',
   methods: {
+    /**
+     * Open a link in a new page
+     * @param url A url link
+     */
     navigateTo (url) {
       window.open(url)
     }
