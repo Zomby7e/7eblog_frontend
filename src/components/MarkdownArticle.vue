@@ -104,7 +104,7 @@ export default {
 
 #markdownHtml :deep h1, #markdownHtml :deep h2, #markdownHtml :deep h3, #markdownHtml :deep h4, #markdownHtml :deep h5,
 #markdownHtml :deep h6 {
-  //color: rgb(172, 34, 255);
+  color: #2c3e50;
 }
 
 #markdownHtml :deep h1 {

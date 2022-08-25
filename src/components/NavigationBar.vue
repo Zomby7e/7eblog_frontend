@@ -5,15 +5,90 @@
       <div id="header-center-links">
         <router-link to="/" class="header-center-link">主页</router-link>
         <router-link to="/about" class="header-center-link">关于</router-link>
-        <a href="https://www.fsf.org/" class="header-center-link">了解自由软件</a>
+        <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(1)">更多链接</a>
+        <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(2)" v-if="visibleToolbox()">工具盒</a>
       </div>
     </div>
+    <ModalWindow ref="modalWindow" :icon="modalIcon" :title="modalTitle" @modalClosed="this.modalType = 0">
+      <MoreLinks :links="linksOtherSite" v-if="modalType === 1"></MoreLinks>
+      <ArticleToolBox :links="linksOtherSite" v-if="modalType === 2"></ArticleToolBox>
+    </ModalWindow>
   </div>
 </template>
 
 <script>
+import ModalWindow from '@/components/ModalWindow'
+import ArticleToolBox from '@/components/ModalSlot/ArticleToolBox'
+import MoreLinks from '@/components/ModalSlot/MoreLinks'
+
 export default {
-  name: 'NavigationBar'
+  // eslint-disable-next-line vue/no-unused-components
+  components: {
+    ModalWindow,
+    ArticleToolBox,
+    MoreLinks
+  },
+  name: 'NavigationBar',
+  data () {
+    return {
+      isModalVisible: false,
+      modalType: 0,
+      modalTitle: '',
+      modalIcon: '',
+      linksOtherSite: [
+        {
+          name: '自由软件基金会',
+          link: 'https://www.fsf.org/'
+        },
+        {
+          name: '陈布衣的博客',
+          link: 'https://buyi.dev/'
+        },
+        {
+          name: '解决各种问题的网站',
+          link: 'https://www.google.com/'
+        }
+      ]
+    }
+  },
+  methods: {
+    changeVisible (modalType) {
+      switch (this.modalType) {
+        case 0:
+          this.$refs.modalWindow.changeVisible()
+          this.modalType = modalType
+          break
+        case 1:
+        case 2:
+          if (this.modalType === modalType) {
+            this.$refs.modalWindow.changeVisible()
+            this.modalType = 0
+          } else {
+            this.modalType = modalType
+          }
+          break
+      }
+      switch (this.modalType) {
+        case 1:
+          this.modalTitle = '可以看看这些链接'
+          this.modalIcon = 'fa-link'
+          break
+        case 2:
+          this.modalTitle = '工具盒'
+          this.modalIcon = 'fa-cog'
+      }
+    },
+    visibleToolbox () {
+      let visible = false
+      const allowedPath = ['/read', '/note', '/about']
+      allowedPath.forEach((path) => {
+        if (path === this.$route.path) {
+          visible = true
+        }
+      })
+      return visible
+    }
+  }
 }
 </script>
 
