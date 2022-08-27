@@ -4,7 +4,13 @@
          :key="index"
     >
       <div class="article-title" @click="goRead(item)">{{ item.title }}</div>
-      <div><text>{{ formatDate(item.timestamp) }}</text>&nbsp;&nbsp;&nbsp;&nbsp;<text>{{ 'hashtags: ' + item.hashtag }}</text></div>
+      <div>
+        <text>{{ formatDate(item.timestamp) }}</text>&nbsp;
+        <text
+          v-for="(hashtagItem, index) in item.hashtag" :key="index" :title="hashtagItem.comment">
+          {{ '#' + hashtagItem.name + ' ' }}
+        </text>
+      </div>
       <br>
     </div>
   </div>
@@ -91,9 +97,11 @@ export default {
 .article-title:hover {
   cursor: pointer;
 }
+
 .article-title:hover:before {
   content: "> ";
 }
+
 .article-title:hover:after {
   content: " <";
 }

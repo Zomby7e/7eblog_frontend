@@ -22,7 +22,6 @@ import ArticleToolBox from '@/components/ModalSlot/ArticleToolBox'
 import MoreLinks from '@/components/ModalSlot/MoreLinks'
 
 export default {
-  // eslint-disable-next-line vue/no-unused-components
   components: {
     ModalWindow,
     ArticleToolBox,
