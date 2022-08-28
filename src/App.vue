@@ -15,6 +15,13 @@
 import NavigationBar from '@/components/NavigationBar'
 
 export default {
-  components: { NavigationBar }
+  components: { NavigationBar },
+  mounted () {
+    console.groupCollapsed('%cThis site is powered by an open source microblogging system (Click this message to view source code)',
+      'font-size: 1.2rem;')
+    console.log('https://github.com/Zomby7e/7eblog_frontend')
+    console.log('https://github.com/Zomby7e/7eblog_backend')
+    console.groupEnd()
+  }
 }
 </script>

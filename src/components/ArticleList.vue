@@ -41,7 +41,6 @@ export default {
         getReadList(this.mCurrentPage, this.mPageSize).then(
           response => {
             this.articleList = response.data ?? []
-            console.log(response)
             this.webApiLock = false
           }
         ).catch(

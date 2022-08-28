@@ -57,7 +57,6 @@ export default {
 
       const onAboutSuccess = (response) => {
         this.articleData = response.data
-        console.log(response)
         this.markdownHtml = converter.makeHtml(response.data)
         // It doesn't work without it written like this, I don't know why.
         setTimeout(() => {
