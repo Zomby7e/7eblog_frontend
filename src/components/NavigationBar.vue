@@ -36,16 +36,16 @@ export default {
       modalIcon: '',
       linksOtherSite: [
         {
-          name: '自由软件基金会',
+          name: 'The Free Software Foundation',
           link: 'https://www.fsf.org/'
         },
         {
-          name: '陈布衣的博客',
-          link: 'https://buyi.dev/'
+          name: 'The Modern JavaScript Tutorial',
+          link: 'https://javascript.info/'
         },
         {
-          name: '解决各种问题的网站',
-          link: 'https://www.google.com/'
+          name: 'AlternativeTo',
+          link: 'https://alternativeto.net/'
         }
       ]
     }
