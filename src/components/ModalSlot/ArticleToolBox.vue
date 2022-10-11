@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import { saveAs } from 'file-saver'
-
 export default {
   name: 'ArticleToolBox',
   data () {
@@ -56,12 +54,7 @@ export default {
      * Save the currently read article to a Markdown text file.
      */
     saveAndDownload () {
-      // TODO: Get and convert markdown string to blob.
-      // TODO: I need a method to get a string data from another page, maybe 'mitt'?
-      const params = new URLSearchParams(window.location.search)
-      const fileName = params.get('id') ?? 'text'
-      const blob = new Blob(['Hello, file.md'], { type: 'text/plain;charset=utf-8' })
-      saveAs(blob, `${fileName}.md`)
+      this.emitter.emit('onSavingArticle')
     }
   }
 }

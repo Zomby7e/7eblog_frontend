@@ -22,6 +22,7 @@ import showdown from 'showdown'
 import { getReadData, getNoteData, getAboutData } from '@/utils/web-api'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
+import { saveAs } from 'file-saver'
 
 export default {
   name: 'MarkdownArticle',
@@ -56,7 +57,8 @@ export default {
       }
 
       const onAboutSuccess = (response) => {
-        this.articleData = response.data
+        this.articleData.content = response.data
+        this.articleData.title = 'about'
         this.markdownHtml = converter.makeHtml(response.data)
         // It doesn't work without it written like this, I don't know why.
         setTimeout(() => {
@@ -85,6 +87,15 @@ export default {
   },
   beforeMount () {
     this.initData()
+    this.emitter.on('onSavingArticle', () => {
+      const params = new URLSearchParams(window.location.search)
+      const fileName = this.articleData.title ?? params.get('id') ?? 'Blog content'
+      const blob = new Blob([this.articleData.content], { type: 'text/plain;charset=utf-8' })
+      saveAs(blob, `${fileName}.md`)
+    })
+  },
+  beforeUnmount () {
+    this.emitter.off('onSavingArticle')
   }
 }
 </script>
