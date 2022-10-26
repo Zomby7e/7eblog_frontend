@@ -17,14 +17,16 @@
 
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, getCurrentInstance } from 'vue'
 import showdown from 'showdown'
 import { getReadData, getNoteData, getAboutData } from '@/utils/web-api'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import { saveAs } from 'file-saver'
+import { AxiosResponse } from 'axios'
 
-export default {
+export default defineComponent({
   name: 'MarkdownArticle',
   props: ['id', 'type'],
   data () {
@@ -42,7 +44,7 @@ export default {
   },
   methods: {
     initData () {
-      const onSuccess = (response) => {
+      const onSuccess = (response: any) => {
         this.articleData = response.data
         this.markdownHtml = converter.makeHtml(response.data.content)
         // It doesn't work without it written like this, I don't know why.
@@ -52,11 +54,11 @@ export default {
         }, 0)
       }
 
-      const onError = (error) => {
-        console.log(error)
+      const onError = (error: string) => {
+        console.error(error)
       }
 
-      const onAboutSuccess = (response) => {
+      const onAboutSuccess = (response: any) => {
         this.articleData.content = response.data
         this.articleData.title = 'about'
         this.markdownHtml = converter.makeHtml(response.data)
@@ -87,7 +89,7 @@ export default {
   },
   beforeMount () {
     this.initData()
-    this.emitter.on('onSavingArticle', () => {
+    getCurrentInstance()?.appContext.config.globalProperties.$emitter.on('onSavingArticle', () => {
       const params = new URLSearchParams(window.location.search)
       const fileName = this.articleData.title ?? params.get('id') ?? 'Blog content'
       const blob = new Blob([this.articleData.content], { type: 'text/plain;charset=utf-8' })
@@ -95,9 +97,9 @@ export default {
     })
   },
   beforeUnmount () {
-    this.emitter.off('onSavingArticle')
+    getCurrentInstance()?.appContext.config.globalProperties.$emitter.off('onSavingArticle')
   }
-}
+})
 </script>
 
 <style scoped lang="scss">

@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   props: ['links'],
   name: 'MoreLinks',
@@ -16,7 +16,7 @@ export default {
      * Open a link in a new page
      * @param url A url link
      */
-    navigateTo (url) {
+    navigateTo (url: string) {
       window.open(url)
     }
   }

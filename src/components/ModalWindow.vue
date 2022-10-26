@@ -17,9 +17,13 @@
   </dialog>
 </template>
 
-<script>
-export default {
-  props: ['title', 'icon'],
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  props: {
+    title: String,
+    icon: String
+  },
   name: 'ModalWindow',
   data () {
     return {
@@ -29,14 +33,16 @@ export default {
   methods: {
     changeVisible () {
       this.visible = !this.visible
-      this.visible ? this.$refs.dialog.show() : this.$refs.dialog.close()
+      // this.visible ? this.$refs.dialog.show() : this.$refs.dialog.close()
+      const dialog: any = document.getElementById('dialog')
+      this.visible ? dialog.show() : dialog.close()
       this.$emit('modalClosed')
     },
     setTitleIcon () {
       return this.icon + ' fa title-text'
     }
   }
-}
+})
 </script>
 
 <style scoped>

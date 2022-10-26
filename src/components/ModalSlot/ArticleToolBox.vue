@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'ArticleToolBox',
   data () {
@@ -23,7 +23,7 @@ export default {
      * When some option clicked, this will be executed.
      * @param optionId Option number which decides what to do
      */
-    onOptionClick (optionId) {
+    onOptionClick (optionId: number) {
       switch (optionId) {
         case 0:
           this.saveAndDownload()
@@ -54,7 +54,7 @@ export default {
      * Save the currently read article to a Markdown text file.
      */
     saveAndDownload () {
-      this.emitter.emit('onSavingArticle')
+      this.$emitter.emit('onSavingArticle')
     }
   }
 }

@@ -16,51 +16,53 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, onBeforeMount, watch, toRefs, getCurrentInstance } from 'vue'
 import { getReadList } from '@/utils/web-api'
 import { toDateChinese } from '@/utils/time-format'
 
-export default {
+export default defineComponent({
   name: 'ArticleList',
-  props: ['currentPage', 'pageSize'],
-  data () {
-    return {
-      mCurrentPage: 0,
-      mPageSize: 10,
-      webApiLock: false,
-      articleList: []
-    }
+  props: {
+    currentPage: Number,
+    pageSize: Number
   },
-  methods: {
+  setup (props) {
+    const currentInstance = getCurrentInstance()?.appContext.config.globalProperties
+    let mCurrentPage = 0
+    let mPageSize = 10
+    let webApiLock = false
+    const articleList = ref([])
+    const { currentPage, pageSize } = toRefs(props)
     /**
-     * [GET] Get article list from back-end.
+     * @description get article list from api
      */
-    getList () {
-      if (!this.webApiLock) {
-        this.webApiLock = true
-        getReadList(this.mCurrentPage, this.mPageSize).then(
+    const getList = () => {
+      if (!webApiLock) {
+        webApiLock = true
+        getReadList(mCurrentPage, mPageSize).then(
           response => {
-            this.articleList = response.data ?? []
-            this.webApiLock = false
+            articleList.value = response.data ?? []
+            webApiLock = false
           }
         ).catch(
           error => {
             console.log(error)
-            this.webApiLock = false
+            webApiLock = false
           }
         )
       }
-    },
+    }
     /**
      * Convert timestamp(milliseconds) to readable text
      * @param timestamp Accurate to milliseconds
      * @return {string} formatted time information
      */
-    formatDate (timestamp) {
+    const formatDate = (timestamp: number) => {
       return toDateChinese(timestamp)
-    },
-    goRead (article) {
-      this.$router.push({
+    }
+    const goRead = (article: any) => {
+      currentInstance?.$router.push({
         path: '/read',
         query: {
           id: article.id,
@@ -68,21 +70,20 @@ export default {
         }
       })
     }
-  },
-  watch: {
-    currentPage: function () {
-      this.mCurrentPage = this.currentPage()
-      this.getList()
-    },
-    pageSize: function () {
-      this.mPageSize = this.pageSize()
-      this.getList()
-    }
-  },
-  beforeMount () {
-    this.getList()
+    onBeforeMount(() => {
+      getList()
+    })
+    watch(currentPage, () => {
+      mCurrentPage = currentPage.value ?? 0
+      getList()
+    })
+    watch(pageSize, () => {
+      mPageSize = pageSize.value ?? 0
+      getList()
+    })
+    return { articleList, formatDate, goRead }
   }
-}
+})
 </script>
 
 <style scoped>

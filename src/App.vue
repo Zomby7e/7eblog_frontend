@@ -11,8 +11,8 @@
   color: #2c3e50;
 }
 </style>
-<script>
-import NavigationBar from '@/components/NavigationBar'
+<script lang="ts">
+import NavigationBar from '@/components/NavigationBar.vue'
 
 export default {
   components: { NavigationBar },
