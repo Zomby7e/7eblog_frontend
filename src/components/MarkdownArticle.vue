@@ -113,36 +113,36 @@ export default defineComponent({
   }
 }
 
-#markdownHtml :deep h1, #markdownHtml :deep h2, #markdownHtml :deep h3, #markdownHtml :deep h4, #markdownHtml :deep h5,
-#markdownHtml :deep h6 {
+#markdownHtml :deep(h1), #markdownHtml :deep(h2), #markdownHtml :deep(h3), #markdownHtml :deep(h4), #markdownHtml :deep(h5),
+#markdownHtml :deep(h6) {
   color: #2c3e50;
 }
 
-#markdownHtml :deep h1 {
+#markdownHtml :deep(h1) {
   font-size: 2rem;
 }
 
-#markdownHtml :deep h2 {
+#markdownHtml :deep(h2) {
   font-size: 1.8rem;
 }
 
-#markdownHtml :deep h3 {
+#markdownHtml :deep(h3) {
   font-size: 1.6rem;
 }
 
-#markdownHtml :deep h4 {
+#markdownHtml :deep(h4)  {
   font-size: 1.4rem;
 }
 
-#markdownHtml :deep h5 {
+#markdownHtml :deep(h5) {
   font-size: 1.2rem;
 }
 
-#markdownHtml :deep h6 {
+#markdownHtml :deep(h6) {
   font-size: 1.2rem;
 }
 
-#markdownHtml :deep blockquote {
+#markdownHtml :deep(blockquote) {
   background-color: rgba(208, 243, 252, 0.1);
   border: #e5e5e5 solid 1px;
   border-radius: 5px;
@@ -152,7 +152,7 @@ export default defineComponent({
   overflow: hidden;
 }
 
-#markdownHtml :deep blockquote::before {
+#markdownHtml :deep(blockquote::before) {
   background-color: rgba(165, 4, 255, 0.8);
   content: '';
   position: absolute;
