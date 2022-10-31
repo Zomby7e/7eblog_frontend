@@ -70,11 +70,11 @@ export default {
       switch (this.modalType) {
         case 1:
           this.modalTitle = '可以看看这些链接'
-          this.modalIcon = 'fa-link'
+          this.modalIcon = 'link'
           break
         case 2:
           this.modalTitle = '工具盒'
-          this.modalIcon = 'fa-cog'
+          this.modalIcon = 'tool'
       }
     },
     visibleToolbox () {

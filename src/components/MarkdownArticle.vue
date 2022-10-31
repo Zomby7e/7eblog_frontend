@@ -24,7 +24,6 @@ import { getReadData, getNoteData, getAboutData } from '@/utils/web-api'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import { saveAs } from 'file-saver'
-import { AxiosResponse } from 'axios'
 
 export default defineComponent({
   name: 'MarkdownArticle',

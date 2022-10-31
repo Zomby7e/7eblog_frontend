@@ -3,11 +3,11 @@
     <!--Title bar for the dialog element-->
     <div id="dialog-title" ref="dialog_title">
       <div id="dialog-title-text">
-        <span :class="setTitleIcon()" aria-hidden="true">&nbsp;</span>
+        <span class="title-text"> {{ getTitleIcon() }}&nbsp;</span>
         <span class="title-text">{{ title }}&nbsp;</span>
       </div>
       <div id="dialog-title-icon" @click="changeVisible">
-        <span class="fa fa-window-close-o title-text" aria-hidden="true"></span>
+        <span class="title-text" aria-hidden="true">❌</span>
       </div>
     </div>
     <!--Content of the dialog element-->
@@ -19,6 +19,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+
 export default defineComponent({
   props: {
     title: String,
@@ -38,15 +39,18 @@ export default defineComponent({
       this.visible ? dialog.show() : dialog.close()
       this.$emit('modalClosed')
     },
-    setTitleIcon () {
-      return this.icon + ' fa title-text'
+    getTitleIcon () {
+      if (this.icon === 'tool') {
+        return '🛠️'
+      } else if (this.icon === 'link') {
+        return '🔗'
+      }
     }
   }
 })
 </script>
 
 <style scoped>
-@import url("/src/assets/font-awesome-4.7.0/css/font-awesome.css");
 
 #dialog {
   z-index: 1;
@@ -69,6 +73,7 @@ export default defineComponent({
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 8px;
 }
 
 #dialog-title-text {

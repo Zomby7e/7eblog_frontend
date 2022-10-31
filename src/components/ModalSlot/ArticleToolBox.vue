@@ -8,7 +8,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent, getCurrentInstance } from 'vue'
+
+export default defineComponent({
   name: 'ArticleToolBox',
   data () {
     return {
@@ -54,10 +56,10 @@ export default {
      * Save the currently read article to a Markdown text file.
      */
     saveAndDownload () {
-      this.$emitter.emit('onSavingArticle')
+      getCurrentInstance()?.appContext.config.globalProperties.$emitter.emit('onSavingArticle')
     }
   }
-}
+})
 </script>
 
 <style scoped>
