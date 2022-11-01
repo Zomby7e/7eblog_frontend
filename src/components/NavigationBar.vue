@@ -6,89 +6,92 @@
         <router-link to="/" class="header-center-link">主页</router-link>
         <router-link to="/about" class="header-center-link">关于</router-link>
         <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(1)">更多链接</a>
-        <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(2)" v-if="visibleToolbox()">工具盒</a>
+        <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(2)"
+           v-if="visibleToolbox()">工具盒</a>
       </div>
     </div>
-    <ModalWindow ref="modalWindow" :icon="modalIcon" :title="modalTitle" @modalClosed="this.modalType = 0">
+    <ModalWindow ref="modalWindow" :icon="modalIcon" :title="modalTitle" @modalClosed="modalType = 0">
       <MoreLinks :links="linksOtherSite" v-if="modalType === 1"></MoreLinks>
       <ArticleToolBox :links="linksOtherSite" v-if="modalType === 2"></ArticleToolBox>
     </ModalWindow>
   </div>
 </template>
 
-<script>
-import ModalWindow from '@/components/ModalWindow'
-import ArticleToolBox from '@/components/ModalSlot/ArticleToolBox'
-import MoreLinks from '@/components/ModalSlot/MoreLinks'
+<script lang="ts">
+import ModalWindow from '@/components/ModalWindow.vue'
+import ArticleToolBox from '@/components/ModalSlot/ArticleToolBox.vue'
+import MoreLinks from '@/components/ModalSlot/MoreLinks.vue'
+import { defineComponent, ref, getCurrentInstance } from 'vue'
 
-export default {
+export default defineComponent({
+  name: 'NavigationBar',
   components: {
     ModalWindow,
     ArticleToolBox,
     MoreLinks
   },
-  name: 'NavigationBar',
-  data () {
-    return {
-      isModalVisible: false,
-      modalType: 0,
-      modalTitle: '',
-      modalIcon: '',
-      linksOtherSite: [
-        {
-          name: 'The Free Software Foundation',
-          link: 'https://www.fsf.org/'
-        },
-        {
-          name: 'The Modern JavaScript Tutorial',
-          link: 'https://javascript.info/'
-        },
-        {
-          name: 'AlternativeTo',
-          link: 'https://alternativeto.net/'
-        }
-      ]
-    }
-  },
-  methods: {
-    changeVisible (modalType) {
-      switch (this.modalType) {
+  setup () {
+    const currentInstance = getCurrentInstance()?.appContext.config.globalProperties
+    const modalType = ref(0)
+    const modalTitle = ref('')
+    const modalIcon = ref('')
+    const modalWindow = ref()
+    const linksOtherSite = ref([
+      {
+        name: 'The Free Software Foundation',
+        link: 'https://www.fsf.org/'
+      },
+      {
+        name: 'The Modern JavaScript Tutorial',
+        link: 'https://javascript.info/'
+      },
+      {
+        name: 'AlternativeTo',
+        link: 'https://alternativeto.net/'
+      }
+    ])
+
+    const changeVisible = (mModaltype: number) => {
+      switch (modalType.value) {
         case 0:
-          this.$refs.modalWindow.changeVisible()
-          this.modalType = modalType
+          modalWindow.value?.changeVisible()
+          modalType.value = mModaltype
           break
         case 1:
         case 2:
-          if (this.modalType === modalType) {
-            this.$refs.modalWindow.changeVisible()
-            this.modalType = 0
+          if (modalType.value === mModaltype) {
+            modalWindow.value?.changeVisible()
+            modalType.value = 0
           } else {
-            this.modalType = modalType
+            modalType.value = mModaltype
           }
           break
       }
-      switch (this.modalType) {
+      switch (modalType.value) {
         case 1:
-          this.modalTitle = '可以看看这些链接'
-          this.modalIcon = 'link'
+          modalTitle.value = '可以看看这些链接'
+          modalIcon.value = 'link'
           break
         case 2:
-          this.modalTitle = '工具盒'
-          this.modalIcon = 'tool'
+          modalTitle.value = '工具盒'
+          modalIcon.value = 'tool'
       }
-    },
-    visibleToolbox () {
+    }
+
+    const visibleToolbox = () => {
       let visible = false
       const allowedPath = ['/read', '/note', '/about']
       allowedPath.forEach((path) => {
-        if (path === this.$route.path) {
+        if (path === currentInstance?.$route.path) {
           visible = true
         }
       })
       return visible
     }
+
+    return { linksOtherSite, visibleToolbox, changeVisible, modalWindow, modalType, modalTitle, modalIcon }
   }
-}
+})
 </script>
 
 <style scoped>

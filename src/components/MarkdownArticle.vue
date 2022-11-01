@@ -46,6 +46,7 @@ export default defineComponent({
       const onSuccess = (response: any) => {
         this.articleData = response.data
         this.markdownHtml = converter.makeHtml(response.data.content)
+        window.document.title = this.articleData.title
         // It doesn't work without it written like this, I don't know why.
         setTimeout(() => {
           hljs.highlightAll()
@@ -61,6 +62,7 @@ export default defineComponent({
         this.articleData.content = response.data
         this.articleData.title = 'about'
         this.markdownHtml = converter.makeHtml(response.data)
+        window.document.title = this.articleData.title
         // It doesn't work without it written like this, I don't know why.
         setTimeout(() => {
           hljs.highlightAll()

@@ -1,5 +1,5 @@
 <template>
-  <dialog ref="dialog" id="dialog">
+  <dialog id="dialog">
     <!--Title bar for the dialog element-->
     <div id="dialog-title" ref="dialog_title">
       <div id="dialog-title-text">
@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, getCurrentInstance } from 'vue'
+const currentInstance = getCurrentInstance()?.appContext.config.globalProperties
 
 export default defineComponent({
   props: {
@@ -26,26 +27,23 @@ export default defineComponent({
     icon: String
   },
   name: 'ModalWindow',
-  data () {
-    return {
-      visible: false
-    }
-  },
-  methods: {
-    changeVisible () {
-      this.visible = !this.visible
-      // this.visible ? this.$refs.dialog.show() : this.$refs.dialog.close()
+  setup (props) {
+    let visible = false
+    const changeVisible = () => {
+      visible = !visible
       const dialog: any = document.getElementById('dialog')
-      this.visible ? dialog.show() : dialog.close()
-      this.$emit('modalClosed')
-    },
-    getTitleIcon () {
-      if (this.icon === 'tool') {
+      visible ? dialog.show() : dialog.close()
+      currentInstance?.$emit('modalClosed')
+    }
+
+    const getTitleIcon = () => {
+      if (props.icon === 'tool') {
         return '🛠️'
-      } else if (this.icon === 'link') {
+      } else if (props.icon === 'link') {
         return '🔗'
       }
     }
+    return { changeVisible, getTitleIcon }
   }
 })
 </script>
@@ -57,7 +55,7 @@ export default defineComponent({
   border: none;
   border-radius: 8px;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;

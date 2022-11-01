@@ -20,6 +20,7 @@
 import { defineComponent, ref, onBeforeMount, watch, toRefs, getCurrentInstance } from 'vue'
 import { getReadList } from '@/utils/web-api'
 import { toDateChinese } from '@/utils/time-format'
+import { Article } from '@/utils/bean'
 
 export default defineComponent({
   name: 'ArticleList',
@@ -33,7 +34,10 @@ export default defineComponent({
     let mPageSize = 10
     let webApiLock = false
     const articleList = ref([])
-    const { currentPage, pageSize } = toRefs(props)
+    const {
+      currentPage,
+      pageSize
+    } = toRefs(props)
     /**
      * @description get article list from api
      */
@@ -61,7 +65,8 @@ export default defineComponent({
     const formatDate = (timestamp: number) => {
       return toDateChinese(timestamp)
     }
-    const goRead = (article: any) => {
+    const goRead = (article: Article) => {
+      console.log('see article', article)
       currentInstance?.$router.push({
         path: '/read',
         query: {
@@ -81,7 +86,11 @@ export default defineComponent({
       mPageSize = pageSize.value ?? 0
       getList()
     })
-    return { articleList, formatDate, goRead }
+    return {
+      articleList,
+      formatDate,
+      goRead
+    }
   }
 })
 </script>

@@ -22,6 +22,7 @@ export default {
     console.log('https://github.com/Zomby7e/7eblog_frontend')
     console.log('https://github.com/Zomby7e/7eblog_backend')
     console.groupEnd()
+    window.document.title = "Zomby7e's Blog"
   }
 }
 </script>
