@@ -3,8 +3,8 @@
     <div id="navbar-background">
       <div id="header-center-title">Zomby7e's Blog</div>
       <div id="header-center-links">
-        <router-link to="/" class="header-center-link">主页</router-link>
-        <router-link to="/about" class="header-center-link">关于</router-link>
+        <router-link to="/" class="header-center-link" @click="closeModalWindow()">主页</router-link>
+        <router-link to="/about" class="header-center-link" @click="closeModalWindow()">关于</router-link>
         <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(1)">更多链接</a>
         <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(2)"
            v-if="visibleToolbox()">工具盒</a>
@@ -22,6 +22,7 @@ import ModalWindow from '@/components/ModalWindow.vue'
 import ArticleToolBox from '@/components/ModalSlot/ArticleToolBox.vue'
 import MoreLinks from '@/components/ModalSlot/MoreLinks.vue'
 import { defineComponent, ref, getCurrentInstance } from 'vue'
+import emitter from '@/utils/emitter'
 
 export default defineComponent({
   name: 'NavigationBar',
@@ -89,7 +90,20 @@ export default defineComponent({
       return visible
     }
 
-    return { linksOtherSite, visibleToolbox, changeVisible, modalWindow, modalType, modalTitle, modalIcon }
+    const closeModalWindow = () => {
+      emitter.emit('closeModalWindow', null)
+    }
+
+    return {
+      linksOtherSite,
+      visibleToolbox,
+      closeModalWindow,
+      changeVisible,
+      modalWindow,
+      modalType,
+      modalTitle,
+      modalIcon
+    }
   }
 })
 </script>

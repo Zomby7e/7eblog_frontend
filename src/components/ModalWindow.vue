@@ -7,7 +7,7 @@
         <span class="title-text">{{ title }}&nbsp;</span>
       </div>
       <div id="dialog-title-icon" @click="changeVisible">
-        <span class="title-text" aria-hidden="true">❌</span>
+        <span class="title-text">❌</span>
       </div>
     </div>
     <!--Content of the dialog element-->
@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
+import emitter from '@/utils/emitter'
 
 export default defineComponent({
   props: {
@@ -42,6 +43,11 @@ export default defineComponent({
         return '🔗'
       }
     }
+    onMounted(() => {
+      emitter.on('closeModalWindow', () => {
+        changeVisible()
+      })
+    })
     return { changeVisible, getTitleIcon }
   }
 })
