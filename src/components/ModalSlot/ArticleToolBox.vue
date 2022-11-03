@@ -8,42 +8,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance } from 'vue'
+import { defineComponent, ref } from 'vue'
+import emitter from '@/utils/emitter'
 
 export default defineComponent({
   name: 'ArticleToolBox',
-  data () {
-    return {
-      menuOptions: [
-        '保存本篇内容',
-        '复制分享链接'
-      ]
-    }
-  },
-  methods: {
+  setup () {
+    const menuOptions = ref([
+      '保存本篇内容',
+      '复制分享链接'
+    ])
+
     /**
      * When some option clicked, this will be executed.
      * @param optionId Option number which decides what to do
      */
-    onOptionClick (optionId: number) {
+    const onOptionClick = (optionId: number) => {
       switch (optionId) {
         case 0:
-          this.saveAndDownload()
+          saveAndDownload()
           break
         case 1:
           navigator.clipboard.writeText(window.location.href).then(
             () => {
-              this.menuOptions[1] = '复制成功！'
+              menuOptions.value[1] = '复制成功！'
               setTimeout(() => {
-                this.menuOptions[1] = '复制分享链接'
+                menuOptions.value[1] = '复制分享链接'
               }, 3000)
             }
           ).catch(
             (error) => {
               console.log('Copy to clipboard failed: ', error)
-              this.menuOptions[1] = '复制失败（可能是因为浏览器阻止本网站访问剪切板）'
+              menuOptions.value[1] = '复制失败（可能是因为浏览器阻止本网站访问剪切板）'
               setTimeout(() => {
-                this.menuOptions[1] = '复制分享链接'
+                menuOptions.value[1] = '复制分享链接'
               }, 3000)
             }
           )
@@ -51,12 +49,16 @@ export default defineComponent({
         default:
           break
       }
-    },
+    }
     /**
      * Save the currently read article to a Markdown text file.
      */
-    saveAndDownload () {
-      getCurrentInstance()?.appContext.config.globalProperties.$emitter.emit('onSavingArticle')
+    const saveAndDownload = () => {
+      emitter.emit('onSavingArticle', null)
+    }
+    return {
+      menuOptions,
+      onOptionClick
     }
   }
 })

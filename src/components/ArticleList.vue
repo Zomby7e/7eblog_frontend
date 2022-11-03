@@ -66,7 +66,6 @@ export default defineComponent({
       return toDateChinese(timestamp)
     }
     const goRead = (article: Article) => {
-      console.log('see article', article)
       currentInstance?.$router.push({
         path: '/read',
         query: {

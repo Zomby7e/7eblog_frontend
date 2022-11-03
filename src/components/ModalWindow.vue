@@ -18,8 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance } from 'vue'
-const currentInstance = getCurrentInstance()?.appContext.config.globalProperties
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
@@ -27,13 +26,13 @@ export default defineComponent({
     icon: String
   },
   name: 'ModalWindow',
-  setup (props) {
+  setup (props, { emit }) {
     let visible = false
     const changeVisible = () => {
       visible = !visible
       const dialog: any = document.getElementById('dialog')
       visible ? dialog.show() : dialog.close()
-      currentInstance?.$emit('modalClosed')
+      emit('modalClosed', null)
     }
 
     const getTitleIcon = () => {

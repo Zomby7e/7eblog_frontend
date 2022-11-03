@@ -1,7 +1,7 @@
 <template>
   <div id="article-container">
     <div id="markdownHtml" v-html="markdownHtml" v-show="showHtml"></div>
-<!--    This HTML fragment is used to show the loading animation and hint-->
+    <!--    This HTML fragment is used to show the loading animation and hint-->
     <div id="loading" v-if="!showHtml">
       <div class="lds-heart">
         <div></div>
@@ -12,18 +12,19 @@
         <text>。</text>
       </div>
     </div>
-<!--    Loading animation - END-->
+    <!--    Loading animation - END-->
   </div>
 
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance } from 'vue'
+import { defineComponent } from 'vue'
 import showdown from 'showdown'
 import { getReadData, getNoteData, getAboutData } from '@/utils/web-api'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import { saveAs } from 'file-saver'
+import emitter from '@/utils/emitter'
 
 export default defineComponent({
   name: 'MarkdownArticle',
@@ -90,7 +91,7 @@ export default defineComponent({
   },
   beforeMount () {
     this.initData()
-    getCurrentInstance()?.appContext.config.globalProperties.$emitter.on('onSavingArticle', () => {
+    emitter.on('onSavingArticle', () => {
       const params = new URLSearchParams(window.location.search)
       const fileName = this.articleData.title ?? params.get('id') ?? 'Blog content'
       const blob = new Blob([this.articleData.content], { type: 'text/plain;charset=utf-8' })
@@ -98,18 +99,19 @@ export default defineComponent({
     })
   },
   beforeUnmount () {
-    getCurrentInstance()?.appContext.config.globalProperties.$emitter.off('onSavingArticle')
+    emitter.off('onSavingArticle')
   }
 })
 </script>
 
 <style scoped lang="scss">
-@media (orientation: portrait ) {
+@media (orientation: portrait) {
   #article-container {
     padding: 0 8px;
   }
 }
-@media (orientation: landscape ) {
+
+@media (orientation: landscape) {
   #article-container {
     padding: 0 80px;
   }
@@ -132,7 +134,7 @@ export default defineComponent({
   font-size: 1.6rem;
 }
 
-#markdownHtml :deep(h4)  {
+#markdownHtml :deep(h4) {
   font-size: 1.4rem;
 }
 
