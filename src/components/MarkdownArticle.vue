@@ -110,13 +110,19 @@ export default defineComponent({
 <style scoped lang="scss">
 @media (orientation: portrait) {
   #article-container {
-    padding: 0 8px;
+    max-width: 90vw;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 30px;
   }
 }
 
 @media (orientation: landscape) {
   #article-container {
-    padding: 0 80px;
+    max-width: 90vw;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 30vw;
   }
 }
 
@@ -152,7 +158,7 @@ export default defineComponent({
 #markdownHtml :deep(blockquote) {
   background-color: rgba(208, 243, 252, 0.1);
   border: #e5e5e5 solid 1px;
-  border-radius: 5px;
+  border-radius: 1px;
   padding: 0 12px;
   margin: 0;
   position: relative;
@@ -160,7 +166,7 @@ export default defineComponent({
 }
 
 #markdownHtml :deep(blockquote::before) {
-  background-color: rgba(165, 4, 255, 0.8);
+  background-color: gray;
   content: '';
   position: absolute;
   top: 0;

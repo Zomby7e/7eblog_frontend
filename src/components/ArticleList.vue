@@ -1,18 +1,20 @@
 <template>
-  <div class="article-list" @click="closeModalWindow">
+  <div id="article-list-root" @click="closeModalWindow">
     <div v-for="(item, index) in articleList"
          :key="index"
     >
+      <div class="article-time">{{ formatDate(item.timestamp) }}</div>
       <div class="article-title" @click="goRead(item)">{{ item.title }}</div>
-      <div>
-        <text>{{ formatDate(item.timestamp) }}</text>&nbsp;
+      <div class="hashtag-container">
         <text
+          class="hashtag-name"
           v-for="(hashtagItem, index) in item.hashtag" :key="index" :title="hashtagItem.comment">
-          {{ '#' + hashtagItem.name + ' ' }}
+          {{ hashtagItem.name + ' ' }}
         </text>
       </div>
       <br>
     </div>
+    <ArticleListPagination v-if="false"></ArticleListPagination>
   </div>
 </template>
 
@@ -21,6 +23,7 @@ import { defineComponent, ref, onBeforeMount, watch, toRefs, getCurrentInstance 
 import { getReadList } from '@/utils/web-api'
 import { toDateChinese } from '@/utils/time-format'
 import { Article } from '@/utils/bean'
+import ArticleListPagination from '@/components/ArticleListPagination.vue'
 import emitter from '@/utils/emitter'
 
 export default defineComponent({
@@ -28,6 +31,9 @@ export default defineComponent({
   props: {
     currentPage: Number,
     pageSize: Number
+  },
+  components: {
+    ArticleListPagination
   },
   setup (props) {
     const currentInstance = getCurrentInstance()?.appContext.config.globalProperties
@@ -100,22 +106,42 @@ export default defineComponent({
 </script>
 
 <style scoped>
+#article-list-root {
+  user-select: none;
+}
+
+.article-time {
+  margin-top: 2rem;
+  color: gray;
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+
 .article-title {
-  color: #B721FF;
-  font-size: 1.2rem;
-  font-weight: bold;
+  color: #4d73dc;
+  font-size: 1.5rem;
   display: inline-block;
+  margin-bottom: 0.2rem;
 }
 
 .article-title:hover {
   cursor: pointer;
+  color: #363636;
 }
 
-.article-title:hover:before {
-  content: "> ";
+.hashtag-name {
+  font-size: 0.8rem;
+  padding: 0.25rem;
+  border-radius: 0.6rem;
+  color: gray;
 }
 
-.article-title:hover:after {
-  content: " <";
+.hashtag-name:hover {
+  color: #2c3e50;
+  text-decoration: underline #2c3e50 solid;
+}
+
+.hashtag-container {
+  display: flex;
 }
 </style>

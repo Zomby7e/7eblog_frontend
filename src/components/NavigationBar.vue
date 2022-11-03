@@ -3,14 +3,15 @@
     <div id="navbar-background">
       <div id="header-center-title">Zomby7e's Blog</div>
       <div id="header-center-links">
-        <router-link to="/" class="header-center-link" @click="closeModalWindow()">主页</router-link>
-        <router-link to="/about" class="header-center-link" @click="closeModalWindow()">关于</router-link>
-        <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(1)">更多链接</a>
+        <router-link to="/" class="header-center-link" @click="closeModalWindow()">Home</router-link>
+        <router-link to="/about" class="header-center-link" @click="closeModalWindow()">About Me</router-link>
+        <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(1)">Friend Links</a>
         <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(2)"
-           v-if="visibleToolbox()">工具盒</a>
+           v-if="visibleToolbox()">Article Tools</a>
       </div>
     </div>
-    <ModalWindow ref="modalWindow" :icon="modalIcon" :title="modalTitle" @modalClosed="modalType = 0">
+    <div style="background-color: #c7c7c7; width: 100%; height: 1px;"></div>
+    <ModalWindow ref="modalWindow" :title="modalTitle" @modalClosed="modalType = 0">
       <MoreLinks :links="linksOtherSite" v-if="modalType === 1"></MoreLinks>
       <ArticleToolBox :links="linksOtherSite" v-if="modalType === 2"></ArticleToolBox>
     </ModalWindow>
@@ -35,7 +36,6 @@ export default defineComponent({
     const currentInstance = getCurrentInstance()?.appContext.config.globalProperties
     const modalType = ref(0)
     const modalTitle = ref('')
-    const modalIcon = ref('')
     const modalWindow = ref()
     const linksOtherSite = ref([
       {
@@ -71,11 +71,9 @@ export default defineComponent({
       switch (modalType.value) {
         case 1:
           modalTitle.value = '可以看看这些链接'
-          modalIcon.value = 'link'
           break
         case 2:
           modalTitle.value = '工具盒'
-          modalIcon.value = 'tool'
       }
     }
 
@@ -101,8 +99,7 @@ export default defineComponent({
       changeVisible,
       modalWindow,
       modalType,
-      modalTitle,
-      modalIcon
+      modalTitle
     }
   }
 })
@@ -117,9 +114,7 @@ export default defineComponent({
 
 @media (orientation: landscape ) {
   #navbar-background {
-    padding: 0 80px;
-    background-color: #21D4FD;
-    background-image: linear-gradient(248deg, #21D4FD 0%, #B721FF 100%);
+    padding: 0 30vw;
     display: flex;
     flex-direction: column;
     height: 80px;
@@ -129,9 +124,10 @@ export default defineComponent({
 
 @media (orientation: portrait ) {
   #navbar-background {
-    padding: 0 8px;
-    background-color: #21D4FD;
-    background-image: linear-gradient(248deg, #21D4FD 0%, #B721FF 100%);
+    max-width: 90vw;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     height: 80px;
@@ -139,16 +135,9 @@ export default defineComponent({
   }
 }
 
-#header-center {
-  display: flex;
-  flex-direction: column;
-  height: 80px;
-  justify-content: space-around;
-}
-
 #header-center-title {
-  font-size: 1.5rem;
-  color: white;
+  font-size: 2rem;
+  color: #424242;
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -172,17 +161,17 @@ export default defineComponent({
 }
 
 .header-center-link {
-  margin-right: 8px;
+  margin-right: 1.5rem;
   flex-shrink: 0;
 }
 
 a:link, a:visited {
-  color: white;
+  color: #424242;
   text-decoration: none;
 }
 
 a:hover {
-  color: white;
+  color: #424242;
   text-decoration: underline;
 }
 

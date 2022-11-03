@@ -3,7 +3,6 @@
     <!--Title bar for the dialog element-->
     <div id="dialog-title" ref="dialog_title">
       <div id="dialog-title-text">
-        <span class="title-text"> {{ getTitleIcon() }}&nbsp;</span>
         <span class="title-text">{{ title }}&nbsp;</span>
       </div>
       <div id="dialog-title-icon" @click="changeVisible">
@@ -23,8 +22,7 @@ import emitter from '@/utils/emitter'
 
 export default defineComponent({
   props: {
-    title: String,
-    icon: String
+    title: String
   },
   name: 'ModalWindow',
   setup (props, { emit }) {
@@ -43,13 +41,6 @@ export default defineComponent({
       emit('modalClosed', null)
     }
 
-    const getTitleIcon = () => {
-      if (props.icon === 'tool') {
-        return '🛠️'
-      } else if (props.icon === 'link') {
-        return '🔗'
-      }
-    }
     onMounted(() => {
       emitter.on('closeModalWindow', () => {
         hide()
@@ -58,7 +49,7 @@ export default defineComponent({
     onBeforeUnmount(() => {
       emitter.off('closeModalWindow')
     })
-    return { changeVisible, getTitleIcon }
+    return { changeVisible }
   }
 })
 </script>
@@ -77,8 +68,7 @@ export default defineComponent({
   bottom: 0;
   margin: auto;
   padding: 8px;
-  background-color: #21D4FD;
-  background-image: linear-gradient(248deg, #21D4FD 0%, #B721FF 100%);
+  background-color: gray;
 }
 
 #dialog-title {

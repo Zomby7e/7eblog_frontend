@@ -30,7 +30,7 @@ export default defineComponent({
 }
 @media (orientation: landscape ) {
   .list-border {
-    padding: 8px 80px;
+    padding: 8px 30vw;
   }
 }
 
