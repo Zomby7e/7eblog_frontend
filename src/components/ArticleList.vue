@@ -1,5 +1,5 @@
 <template>
-  <div class="article-list">
+  <div class="article-list" @click="closeModalWindow">
     <div v-for="(item, index) in articleList"
          :key="index"
     >
@@ -21,6 +21,7 @@ import { defineComponent, ref, onBeforeMount, watch, toRefs, getCurrentInstance 
 import { getReadList } from '@/utils/web-api'
 import { toDateChinese } from '@/utils/time-format'
 import { Article } from '@/utils/bean'
+import emitter from '@/utils/emitter'
 
 export default defineComponent({
   name: 'ArticleList',
@@ -74,6 +75,9 @@ export default defineComponent({
         }
       })
     }
+    const closeModalWindow = () => {
+      emitter.emit('closeModalWindow', null)
+    }
     onBeforeMount(() => {
       getList()
     })
@@ -88,7 +92,8 @@ export default defineComponent({
     return {
       articleList,
       formatDate,
-      goRead
+      goRead,
+      closeModalWindow
     }
   }
 })

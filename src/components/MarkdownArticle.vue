@@ -1,5 +1,5 @@
 <template>
-  <div id="article-container">
+  <div id="article-container" @click="closeModalWindow()">
     <div id="markdownHtml" v-html="markdownHtml" v-show="showHtml"></div>
     <!--    This HTML fragment is used to show the loading animation and hint-->
     <div id="loading" v-if="!showHtml">
@@ -87,6 +87,9 @@ export default defineComponent({
     },
     reload () {
       location.reload()
+    },
+    closeModalWindow () {
+      emitter.emit('closeModalWindow', null)
     }
   },
   beforeMount () {
