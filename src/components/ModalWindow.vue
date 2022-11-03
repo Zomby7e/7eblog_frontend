@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted } from 'vue'
 import emitter from '@/utils/emitter'
 
 export default defineComponent({
@@ -36,6 +36,13 @@ export default defineComponent({
       emit('modalClosed', null)
     }
 
+    const hide = () => {
+      visible = false
+      const dialog: any = document.getElementById('dialog')
+      dialog.close()
+      emit('modalClosed', null)
+    }
+
     const getTitleIcon = () => {
       if (props.icon === 'tool') {
         return '🛠️'
@@ -45,8 +52,11 @@ export default defineComponent({
     }
     onMounted(() => {
       emitter.on('closeModalWindow', () => {
-        changeVisible()
+        hide()
       })
+    })
+    onBeforeUnmount(() => {
+      emitter.off('closeModalWindow')
     })
     return { changeVisible, getTitleIcon }
   }
