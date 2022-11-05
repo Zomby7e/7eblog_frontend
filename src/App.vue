@@ -1,6 +1,7 @@
 <template>
   <NavigationBar></NavigationBar>
   <router-view/>
+  <BottomBar></BottomBar>
 </template>
 
 <style lang="scss">
@@ -10,12 +11,14 @@
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+
 </style>
 <script lang="ts">
 import NavigationBar from '@/components/NavigationBar.vue'
+import BottomBar from '@/components/BottomBar.vue'
 
 export default {
-  components: { NavigationBar },
+  components: { BottomBar, NavigationBar },
   mounted () {
     console.groupCollapsed('%cThis site is powered by an open source microblogging system (Click this message to view source code)',
       'font-size: 1.2rem;')

@@ -1,18 +1,11 @@
 <template>
-  <div id="article-container" @click="closeModalWindow()">
+  <div id="article-container">
     <div id="markdownHtml" v-html="markdownHtml" v-show="showHtml"></div>
-    <!--    This HTML fragment is used to show the loading animation and hint-->
-    <div id="loading" v-if="!showHtml">
-      <div class="lds-heart">
-        <div></div>
-      </div>
-      <div id="loading-text">
-        <text>正在加载内容，如果加载出错请点击</text>
-        <text id="loading-reload" @click="reload">刷新</text>
-        <text>。</text>
-      </div>
+    <div id="loading-text" v-if="!showHtml">
+      <text>Loading now, if any error occurred, you can lick </text>
+      <text id="loading-reload" @click="reload">retry</text>
+      <text> now.</text>
     </div>
-    <!--    Loading animation - END-->
   </div>
 
 </template>
@@ -87,14 +80,11 @@ export default defineComponent({
     },
     reload () {
       location.reload()
-    },
-    closeModalWindow () {
-      emitter.emit('closeModalWindow', null)
     }
   },
   beforeMount () {
     this.initData()
-    emitter.on('onSavingArticle', () => {
+    emitter.on('saveArticle', () => {
       const params = new URLSearchParams(window.location.search)
       const fileName = this.articleData.title ?? params.get('id') ?? 'Blog content'
       const blob = new Blob([this.articleData.content], { type: 'text/plain;charset=utf-8' })
@@ -102,7 +92,7 @@ export default defineComponent({
     })
   },
   beforeUnmount () {
-    emitter.off('onSavingArticle')
+    emitter.off('saveArticle')
   }
 })
 </script>
@@ -253,12 +243,12 @@ export default defineComponent({
 }
 
 #loading-text {
-  margin-top: 15px;
+  margin-top: 30px;
   color: gray;
 }
 
 #loading-reload {
-  color: #B721FF;
+  color: #4d73dc;
   cursor: pointer;
 }
 </style>

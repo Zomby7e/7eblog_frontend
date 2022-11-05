@@ -3,81 +3,25 @@
     <div id="navbar-background">
       <div id="header-center-title">Zomby7e's Blog</div>
       <div id="header-center-links">
-        <router-link to="/" class="header-center-link" @click="closeModalWindow()">Home</router-link>
-        <router-link to="/about" class="header-center-link" @click="closeModalWindow()">About Me</router-link>
-        <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(1)">Friend Links</a>
-        <a href="javascript:void(0);" class="header-center-link" @click="changeVisible(2)"
-           v-if="visibleToolbox()">Article Tools</a>
+        <router-link to="/" class="header-center-link">Home</router-link>
+        <router-link to="/about" class="header-center-link">About</router-link>
+        <a href="javascript:void(0);" class="header-center-link" @click="goDownload()"
+           v-if="isSaveVisible()">Download</a>
       </div>
     </div>
     <div style="background-color: #c7c7c7; width: 100%; height: 1px;"></div>
-    <ModalWindow ref="modalWindow" :title="modalTitle" @modalClosed="modalType = 0">
-      <MoreLinks :links="linksOtherSite" v-if="modalType === 1"></MoreLinks>
-      <ArticleToolBox :links="linksOtherSite" v-if="modalType === 2"></ArticleToolBox>
-    </ModalWindow>
   </div>
 </template>
 
 <script lang="ts">
-import ModalWindow from '@/components/ModalWindow.vue'
-import ArticleToolBox from '@/components/ModalSlot/ArticleToolBox.vue'
-import MoreLinks from '@/components/ModalSlot/MoreLinks.vue'
-import { defineComponent, ref, getCurrentInstance } from 'vue'
+import { defineComponent, getCurrentInstance } from 'vue'
 import emitter from '@/utils/emitter'
 
 export default defineComponent({
   name: 'NavigationBar',
-  components: {
-    ModalWindow,
-    ArticleToolBox,
-    MoreLinks
-  },
   setup () {
     const currentInstance = getCurrentInstance()?.appContext.config.globalProperties
-    const modalType = ref(0)
-    const modalTitle = ref('')
-    const modalWindow = ref()
-    const linksOtherSite = ref([
-      {
-        name: 'The Free Software Foundation',
-        link: 'https://www.fsf.org/'
-      },
-      {
-        name: 'The Modern JavaScript Tutorial',
-        link: 'https://javascript.info/'
-      },
-      {
-        name: 'AlternativeTo',
-        link: 'https://alternativeto.net/'
-      }
-    ])
-
-    const changeVisible = (mModaltype: number) => {
-      switch (modalType.value) {
-        case 0:
-          modalWindow.value?.changeVisible()
-          modalType.value = mModaltype
-          break
-        case 1:
-        case 2:
-          if (modalType.value === mModaltype) {
-            modalWindow.value?.changeVisible()
-            modalType.value = 0
-          } else {
-            modalType.value = mModaltype
-          }
-          break
-      }
-      switch (modalType.value) {
-        case 1:
-          modalTitle.value = '可以看看这些链接'
-          break
-        case 2:
-          modalTitle.value = '工具盒'
-      }
-    }
-
-    const visibleToolbox = () => {
+    const isSaveVisible = () => {
       let visible = false
       const allowedPath = ['/read', '/note', '/about']
       allowedPath.forEach((path) => {
@@ -87,19 +31,12 @@ export default defineComponent({
       })
       return visible
     }
-
-    const closeModalWindow = () => {
-      emitter.emit('closeModalWindow', null)
+    const goDownload = () => {
+      emitter.emit('saveArticle', null)
     }
-
     return {
-      linksOtherSite,
-      visibleToolbox,
-      closeModalWindow,
-      changeVisible,
-      modalWindow,
-      modalType,
-      modalTitle
+      isSaveVisible,
+      goDownload
     }
   }
 })

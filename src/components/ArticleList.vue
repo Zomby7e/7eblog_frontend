@@ -1,5 +1,5 @@
 <template>
-  <div id="article-list-root" @click="closeModalWindow">
+  <div id="article-list-root">
     <div v-for="(item, index) in articleList"
          :key="index"
     >
@@ -24,7 +24,6 @@ import { getReadList } from '@/utils/web-api'
 import { toDateChinese } from '@/utils/time-format'
 import { Article } from '@/utils/bean'
 import ArticleListPagination from '@/components/ArticleListPagination.vue'
-import emitter from '@/utils/emitter'
 
 export default defineComponent({
   name: 'ArticleList',
@@ -81,9 +80,6 @@ export default defineComponent({
         }
       })
     }
-    const closeModalWindow = () => {
-      emitter.emit('closeModalWindow', null)
-    }
     onBeforeMount(() => {
       getList()
     })
@@ -98,8 +94,7 @@ export default defineComponent({
     return {
       articleList,
       formatDate,
-      goRead,
-      closeModalWindow
+      goRead
     }
   }
 })

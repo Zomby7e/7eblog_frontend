@@ -1,5 +1,6 @@
 <template>
-  <div class="hello">
+  <div id="bottom-bar-root">
+    bottom
   </div>
 </template>
 
@@ -7,13 +8,11 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+  name: 'BottomBar'
 })
 </script>
 
-<style scoped lang="scss">
-
+<style scoped>
+#bottom-bar-root {
+}
 </style>
