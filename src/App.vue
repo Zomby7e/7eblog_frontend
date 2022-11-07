@@ -1,7 +1,7 @@
 <template>
   <NavigationBar></NavigationBar>
   <router-view/>
-  <BottomBar></BottomBar>
+  <BottomBar v-if="false"></BottomBar>
 </template>
 
 <style lang="scss">
